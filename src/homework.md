@@ -9,3 +9,15 @@
 - difference between ~(tilde) and ^(caret)
 - what are dependencies
 - what is the use of "-g" while npm install
+- shall we push package.json and package-lock.json on git or not?
+
+
+- initialize git
+- add .gitignore
+- create a remote repo on github 
+- push all code to remote origin
+- play with routes and route extensions , /hello, /hello/2, /xyz
+- order of the routes matter a lot
+- install Postman app and make a workspace/collection, then test API call
+- write logic to handle, get, post , patch, put, delete pi calls and test them on postman
+
