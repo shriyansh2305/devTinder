@@ -55,3 +55,56 @@ In 4.18.2,
 Why ^ is Common
 It's safe (no breaking changes), but allows you to get bug fixes and minor features.
 For libraries like Express, this ensures stability unless a major update (like v5) is released.
+
+
+The ".use" matches all the HTTP method api call to /user
+app.use("/user", (req, res) => {
+    res.send("Hello from the server")
+})
+
+This matches any route which has "/", after that what ever is there, it doessn't matter.
+the order or routes are very important, if we will keep this at the top, all the routes will use this.
+app.use("/", (req, res) => {
+    res.send("Hello from the dashboard")
+})
+
+Pattern	                Matches Example	                    Description
+/ab?cd	                /abcd, /acd	                        b is optional
+/ab+cd	                /abcd, /abbcd	                    b one or more
+/ab*cd	                /abcd, /ab123cd	                    Anything between ab and cd
+/ab(cd)?e	            /abe, /abcde	                    Group (cd) is optional
+/a/	                    /a, /abc, /bat	                    Any route containing "a"
+/.*fly$/	            /butterfly, /dragonfly	            Ends with "fly"
+
+Query Parameters (?key=value): Accessed using req.query.
+    Example: req.query.search or req.query.page.
+    app.get("/user/:id/profile", (req, res) => {
+        const {id} = req.params
+        res.send(req.query)
+        res.send(`id is : ${id} and queried for ${JSON.stringify(req.query)}`)
+    })
+
+Dynamic Route Parameters (/route/:param): Accessed using req.params.
+    Example: req.params.id or req.params.category.
+
+Q. Why do we need to do JSOn.stringify?
+
+    JavaScript cannot automatically convert an object into a string in a way that makes sense for sending over HTTP or displaying to a user. Here’s why:
+
+    String Interpolation: When you try to directly embed an object inside a string (e.g., in a template literal), JavaScript has no way to automatically guess how to represent the complex object as a simple string.
+
+    If you try to use an object like { name: "shri", age: "25" } inside a template string:  
+
+        const person = { name: "shri", age: "25" };
+        console.log(`The person is: ${person}`);
+
+        JavaScript will try to convert the object into a string using its internal .toString() method, which defaults to:   [object Object]
+
+        So the output will be:  The person is: [object Object]
+
+
+        const person = { name: "shri", age: "25" };
+        const jsonString = JSON.stringify(person);
+        console.log(jsonString);  // '{"name":"shri","age":"25"}'
+
+

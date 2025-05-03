@@ -9,7 +9,7 @@
 - difference between ~(tilde) and ^(caret)
 - what are dependencies
 - what is the use of "-g" while npm install
-- shall we push package.json and package-lock.json on git or not?
+- shall we push package.json and package-lock.json on git or not? yes
 
 
 - initialize git
@@ -19,5 +19,8 @@
 - play with routes and route extensions , /hello, /hello/2, /xyz
 - order of the routes matter a lot
 - install Postman app and make a workspace/collection, then test API call
-- write logic to handle, get, post , patch, put, delete pi calls and test them on postman
-
+- write logic to handle, get, post, patch, put, delete api calls and test them on postman
+- explore routing and use of ?, +, (), * in the routes (not supported in express:5)
+- use of regex in routes /a/, /.*fly$/
+- reading the query params in the routes
+- reading the dynamic routes
