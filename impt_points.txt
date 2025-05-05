@@ -107,4 +107,32 @@ Q. Why do we need to do JSOn.stringify?
         const jsonString = JSON.stringify(person);
         console.log(jsonString);  // '{"name":"shri","age":"25"}'
 
+for one path, we can have multiple request handlers.
+app.get("/path", rg1, rh2, rh3, rh4)
+
+
+They can also be put inside array
+app.get("/path", rh1, [rh2, rh3], rh4)
+
+We can also separate the app.get
+
+like: 
+app.get("/path", rh1, rh2)
+app.get("/path", rh3, rh4)
+
+If we have put a res.send and when other res.send is encountered, then it will throw error, 
+saying we can not send the headers again
+
+When we call next(), a new functional context is created and pushed. 
+Then after that call is completed, the command comes back to hat line again.
+
+
+- next()
+    next() is used to move to the next middleware/route.
+    It's required if you want to run multiple functions in sequence for a request.
+    If you forget to call next() and don't send a response, the request hangs.
+    Very helpful for modular and readable code.
+
+
+
 
