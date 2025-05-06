@@ -133,6 +133,28 @@ Then after that call is completed, the command comes back to hat line again.
     If you forget to call next() and don't send a response, the request hangs.
     Very helpful for modular and readable code.
 
+Yes, query parameters are always placed at the end of a URL, after a ?.
+    ✅ Path goes before ?
+    ✅ Parameters go after ?
+    ✅ Multiple parameters use &
+
+
+- app.use() vs app.all()
+
+    app.use('/admin', (req, res, next) => {
+        console.log('Admin middleware');
+        next();
+    });
+
+    This middleware runs for any route starting with /admin, like /admin/dashboard, /admin/users, etc.
+
+    app.all('/admin', (req, res, next) => {
+        console.log('Admin middleware');
+        next();
+    });
+    
+    This middleware runs only for requests to /admin (e.g., GET /admin, POST /admin, etc.).
+
 
 
 
