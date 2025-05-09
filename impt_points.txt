@@ -152,9 +152,98 @@ Yes, query parameters are always placed at the end of a URL, after a ?.
         console.log('Admin middleware');
         next();
     });
-    
+
     This middleware runs only for requests to /admin (e.g., GET /admin, POST /admin, etc.).
 
 
+Scenario	                        Error Thrown?	            Behavior
+DB doesn't exist	                    ❌ No	            Created on first write
+Collection doesn't exist	            ❌ No	            Created on first write
+findOne() on missing coll	            ❌ No	            Returns null
+insertOne() on missing DB/coll	        ❌ No	            Creates DB and collection
+
+
+
+MongoDB vs Mongoose – Key Differences
+    🔹 MongoDB Native Driver
+        Official low-level Node.js driver to interact with MongoDB.
+        Directly uses MongoClient, db, and collection to perform operations.
+        No schema enforcement — flexible, but risks inserting inconsistent data.
+        Requires manual validation and relationship handling.
+        Slightly better performance, but more boilerplate code.
+
+    🔹 Mongoose (ODM - Object Data Modeling Library)
+        A higher-level abstraction over MongoDB for Node.js.
+        Provides schemas to define structure of documents.
+        Automatically handles data validation before inserting.
+        Supports middleware (hooks) like pre-save, post-remove, etc.
+        Enables easy implementation of relationships using .populate().
+        Built-in methods for CRUD operations like .find(), .save(), .deleteOne() etc.
+        Great for building structured, scalable applications.
+
+✅ Why Use Mongoose?
+    Schema definition – Controls the shape of documents.
+    Data validation – Ensures data integrity automatically.
+    Cleaner code – Uses models and methods for easy operations.
+    Middleware support – Run custom logic during database operations.
+    Relationships – Use .populate() for referencing other documents.
+    Better error handling – Mongoose gives descriptive errors.
+
+What is Mongoose?
+    Mongoose is an ODM (Object Data Modeling) library for MongoDB and Node.js.
+    It provides a way to define schemas, validate data, and use models for easier and cleaner interactions with MongoDB.
+
+🔄 Mongoose vs MongoDB (native) vs SQL
+
+Feature	            SQL (e.g., MySQL)	        MongoDB Native Driver	Mongoose (ODM for MongoDB)
+Database type	        Relational (tables)	NoSQL (documents)	NoSQL (document-based via MongoDB)
+Schema required?	    ✅ Yes	                        ❌ No	                    ✅ Yes
+Validation	            ✅ Built-in	                    ❌ Manual	                ✅ Automatic
+Relationships	        ✅ JOINs	                        ❌ Manual references	        ✅ .populate()
+Query language	    SQL (SELECT, INSERT)	MongoDB query methods       Simplified Mongoose methods
+Middleware/hooks	Limited	                            ❌ Not built-in	          ✅ pre, post hooks
+Ease of use	         Moderate	Low-level (more boilerplate)	✅ High-level & beginner-friendly
+
+
+
+| Concept        | Meaning                                          |
+| -------------- | ------------------------------------------------ |
+| `Schema`       | Defines structure of a document                  |
+| `Model`        | Gives you functions to create/read/update/delete |
+| `.create()`    | Adds a new document                              |
+| `.find()`      | Gets documents                                   |
+| `.updateOne()` | Modifies one document                            |
+| `.deleteOne()` | Deletes one document                             |
+
+| Part                       | Meaning                                                         |
+| -------------------------- | --------------------------------------------------------------- |
+| `'User'` (model name)      | Name of the model → maps to **`users`** collection in MongoDB   |
+| `userSchema`               | Defines the **structure** and **rules** for the documents       |
+| `const User`               | Variable holding the model class you will use for DB operations |
+| ✅ Can name it differently? | Yes, but it’s best to match with the model for readability      |
+
+
+1. Model.create({...}) – Quick & Clean
+    Pros:
+        Shorter, cleaner syntax.
+        Automatically validates and saves in one step.
+        Great for simple use cases like inserting form data.
+    When to use:
+        In REST API endpoints where you're just inserting user data.
+        When you don't need to modify the instance before saving.
+    await User.create(req.body); // Best for clean inserts
+
+✅ 2. new Model({...}); instance.save() – More Flexible
+    Pros:
+        Gives you access to the document before saving.
+        Lets you add default values, computed fields, or call instance methods.
+        Useful for custom logic or async hooks (like pre('save')).
+    When to use:
+        When you need to manipulate the data before saving.
+        When using custom instance methods or pre/post save hooks.
+
+    const user = new User(req.body);
+    user.fullName = user.firstName + ' ' + user.lastName;
+    await user.save();
 
 

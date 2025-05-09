@@ -37,4 +37,13 @@
 - write a dummy auth middleware for all user routes except /user/login
 - wild card error handling using app.use("/", (err, req, res, next)) and should always write at the end
 
+- create a free cluster on MongoDB official website (Mongo Atlas)
+(conection string : mongodb+srv://shriyansh:Kolkata123456@namastenode.crklcdw.mongodb.net/)
+- install mongoose library (why this?)
+- Connect your application to the database "connection-url"/devTinder
+- call the connectDB function and connect to the database before starting the application on 7777
+- create a userSchema and User Model
+- create POST /signup API to add data to database
+- push some documents using API calls from postman
+
 

@@ -1,55 +1,77 @@
 const express = require("express");
-
-const {adminAuth, userAuth} = require("./middlewares/auth")
+const {connectDB} = require("./config/database")
+const User = require("./models/user")
 const app = express();
 
-// initially there is no error, it does not enter this route
-app.use("/", (err, req, res, next) => {
-    console.log("inside /")
-    if(err) {
-        res.send("Some error occured!!")
-    }
-})
-app.use("/admin", adminAuth)
-// app.use("/user", userAuth)
 
-app.get("/admin/getAllUsers", (req, res) => {
+app.post("/signup", async (req, res) => {
+    const userObj = {
+        firstName: "virendra",
+        lastName: "sehwag",
+        emailId: "virendra@kohli.com",
+        password: "shri12345"
+    }
+    // create a new instane of User model
+    const user = new User(userObj)
     try {
-        // logic to get all users
-        res.send("Fetched all users")
-    }catch {
-        throw new Error("error")
+        await user.save()
+        console.log(user.__v);        
+        user.password = "sehwag123"
+        await user.save()
+        console.log(user.__v);
+        res.send("user added successfully!!")
+    } catch(err) {
+        res.status(400).send("Error saving the user: " + err.message);
     }
-})
-
-app.delete("/admin/deleteUser", (req, res) => {
-    try {
-        // logic to delete a user
-        res.send("Deleted user")
-    }catch {
-        throw new Error("error")
-    }
-})
-// no need of auth middleware here
-app.use("/user/login", (req, res) => {
-    res.send("user logged in successfully")
-})
-app.get("/user/profile", userAuth, (req, res) => {
-    try {
-        res.send("Hii user")
-    }catch {
-        throw new Error("error")
-    }
-})
-
-// wildcard to handle any type of error, which we could have missed
-app.use("/", (err, req, res, next) => {
-    console.log("inside last /"); 
-    if(err) {
-        res.send("Some error occured!!")
-    }
-})
-
-app.listen(3000, () => {
-    console.log("Server is listening on port 3000...");
 });
+
+
+connectDB()
+    .then(() => {
+        console.log("Database connection estabished..")
+        app.listen(7777, () => {
+            console.log("Server is successfully listening on port 7777...");
+            
+        })
+    })
+    .catch((err) => {
+        console.log("Database cannot be established!!");
+    })
+
+
+
+
+
+// My code: 
+// async function connectDB() {
+//     try {
+//         await mongoose.connect(uri)
+//         console.log("Connected to DB...");
+//         app.listen(7777, () => {
+//             console.log("Server is listening on port 3000...");
+//         })
+//     } catch(err) {
+//         console.log(err)
+//     }
+// }
+// const userSchema = mongoose.Schema({
+//     firstName: String,
+//     lastName: String,
+//     age: Number,
+//     email: String
+// })
+// const User = mongoose.model('User', userSchema)
+
+// app.post("/signup", async (req, res) => {
+//     const data = {
+//         firstName: "mno", 
+//         lastName: "Kumar",
+//         age: 22, 
+//         email: "ss23@gamil.com"
+//     }
+//     const response = await User.create(data)
+//     console.log(response);
+    
+//     res.send("user created")
+// })
+// connectDB()
