@@ -246,4 +246,24 @@ Ease of use	         Moderate	Low-level (more boilerplate)	✅ High-level & begi
     user.fullName = user.firstName + ' ' + user.lastName;
     await user.save();
 
+Important Notes for .env Files
 
+    No spaces around =:
+        ❌ Wrong: MONGO_URI = mongodb+srv://user:pass@cluster.mongodb.net/mydb
+        ✅ Correct: MONGO_URI=mongodb+srv://user:pass@cluster.mongodb.net/mydb
+
+    No export keyword:
+        ❌ Wrong: export MONGO_URI=mongodb+srv://...
+        ✅ Correct: MONGO_URI=mongodb+srv://...
+
+    No semicolons or commas:
+        Always use: KEY=value on each line, no punctuation.
+
+    Use quotes only when needed (e.g., special characters):
+        ❌ Wrong: PASSWORD=pa$$w0rd with space
+        ✅ Correct: PASSWORD="pa$$w0rd with space"
+
+    All values are strings:
+        Even numeric values are stored as strings (e.g., PORT=3000).
+        If needed, convert to a number:
+        const port = Number(process.env.PORT);

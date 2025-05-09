@@ -1,7 +1,11 @@
+require("dotenv").config();
 const express = require("express");
 const {connectDB} = require("./config/database")
 const User = require("./models/user")
 const app = express();
+const uri = process.env.MONGO_URI;
+const port = Number(process.env.PORT) || 7777;
+console.log(uri);
 
 
 app.post("/signup", async (req, res) => {
@@ -29,7 +33,7 @@ app.post("/signup", async (req, res) => {
 connectDB()
     .then(() => {
         console.log("Database connection estabished..")
-        app.listen(7777, () => {
+        app.listen(port, () => {
             console.log("Server is successfully listening on port 7777...");
             
         })
