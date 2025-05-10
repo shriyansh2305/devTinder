@@ -267,3 +267,46 @@ Important Notes for .env Files
         Even numeric values are stored as strings (e.g., PORT=3000).
         If needed, convert to a number:
         const port = Number(process.env.PORT);
+
+Aspect	                JSON	                                                                JavaScript Object
+Definition	        Text-based format for data exchange.	                                In-memory data structure in JavaScript.
+Syntax	            Strict syntax: keys and strings must use double quotes.	                Flexible syntax: keys can be unquoted; methods allowed.
+Data Types	        Supports limited types: string, number, boolean, null, array, object.	Supports all JavaScript data types, including undefined.
+Functionality	    No methods or executable code.	                                        Can include methods and execute logic.
+Purpose	            Used for transferring data between systems.	                            Used for in-program data manipulation.
+Conversion	        Requires parsing to convert to JavaScript Object.	                    Can be directly used in JavaScript programs.
+
+
+Use JSON.parse() to convert JSON strings into JavaScript Objects.
+Use JSON.stringify() to convert JavaScript Objects into JSON strings.
+
+For different content-types, we need different middleware to parse the body.
+| Content-Type                        | Meaning / Use Case                  | Middleware Needed          | Parsed Data Location       |
+| ----------------------------------- | ----------------------------------- | -------------------------- | -------------------------- |
+| `application/json`                  | JSON body (APIs, SPAs)              | `express.json()`           | `req.body`                 |
+| `application/x-www-form-urlencoded` | Form data (like from HTML `<form>`) | `express.urlencoded()`     | `req.body`                 |
+| `multipart/form-data`               | File uploads via form               | `multer`                   | `req.body` + `req.file(s)` |
+| `text/plain`                        | Plain text data                     | Custom or `express.text()` | `req.body`                 |
+| `application/octet-stream`          | Binary data (e.g., file buffers)    | Custom handling            | Raw `req` stream           |
+
+
+| Stack/Language             | JSON Handling                                | Form Data Handling                        | File Uploads Handling                      |
+| -------------------------- | -------------------------------------------- | ----------------------------------------- | ------------------------------------------ |
+| **Haskell** (Scotty/Yesod) | Use `jsonData` for JSON, `FromJSON` instance | Use `param` or `form` combinators         | Use `multipart` package or Yesod's `fileA` |
+| **Go** (Standard Library)  | `json.NewDecoder()` or `json.Unmarshal()`    | `r.FormValue()` for URL-encoded form data | `r.MultipartForm` for file uploads         |
+| **Go** (Gin)               | `ShouldBindJSON()` for JSON                  | `c.FormValue()`                           | Use `FormFile()` for file uploads          |
+
+Incoming Request
+       ↓
+  app.use() (global middleware)
+       ↓
+  app.use('/somepath') (path-specific middleware)
+       ↓
+  app.get('/path') or app.post('/path')
+       ↓
+     Response
+
+
+✅ Order of app.use() and routes matters.
+🔄 Express goes top-down, and stops if a response is sent (res.send(), res.end(), etc.).
+🔥 Middleware that should apply globally (like express.json()) must come before any routes that rely on it.

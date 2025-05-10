@@ -1,29 +1,19 @@
 require("dotenv").config();
 const express = require("express");
-const {connectDB} = require("./config/database")
+const connectDB = require("./config/database")
 const User = require("./models/user")
 const app = express();
-const uri = process.env.MONGO_URI;
 const port = Number(process.env.PORT) || 7777;
-console.log(uri);
 
+app.use(express.json())
 
 app.post("/signup", async (req, res) => {
-    const userObj = {
-        firstName: "virendra",
-        lastName: "sehwag",
-        emailId: "virendra@kohli.com",
-        password: "shri12345"
-    }
+    
     // create a new instane of User model
-    const user = new User(userObj)
+    const user = new User(req.body)
     try {
         await user.save()
-        console.log(user.__v);        
-        user.password = "sehwag123"
-        await user.save()
-        console.log(user.__v);
-        res.send("user added successfully!!")
+        res.send("user added successfully!!!")
     } catch(err) {
         res.status(400).send("Error saving the user: " + err.message);
     }
