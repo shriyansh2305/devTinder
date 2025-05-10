@@ -310,3 +310,33 @@ Incoming Request
 ✅ Order of app.use() and routes matters.
 🔄 Express goes top-down, and stops if a response is sent (res.send(), res.end(), etc.).
 🔥 Middleware that should apply globally (like express.json()) must come before any routes that rely on it.
+
+When you use User.findOne({ email: 'example@example.com' }) in Mongoose (MongoDB), 
+and multiple documents match the condition (i.e., same email), then:
+    Mongoose will return the first document it finds, 
+    based on the default internal order of documents in the database (usually insertion order).
+    But important to note: MongoDB doesn't guarantee a specific order without .sort().
+
+You should enforce unique email IDs to prevent this situation altogether.
+
+
+PUT vs PATCH
+    PUT
+    The PUT method is used to replace an existing resource with an updated version. 
+    This method works by replacing the entire resource 
+    (i.e., the specific product located at the /products/123 endpoint) with the data 
+    that is included in the request’s body. This means that any fields or properties 
+    not included in the request body are deleted, and any new fields or properties are added.
+
+    PATCH
+    The PATCH method is used to update an existing resource. It is similar to PUT, 
+    except that PATCH enables clients to update specific properties on a resource—without 
+    overwriting the others. For instance, if you have a product resource with fields for name, 
+    brand, and price, but you only want to update the price, 
+    you could use the PATCH method to send a request that only includes the new value 
+    for the price field. The rest of the resource would remain unchanged. 
+    This behavior makes the PATCH method more flexible and efficient than PUT.
+
+    Also, If we have any field which is not there in the db, then taht will be ignored. 
+    If along with price, we send expiry also, it will be ignored and no new key:pair 
+    will be created in the document.

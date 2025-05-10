@@ -1,3 +1,4 @@
+- Lecture: 3
 - create a repository
 - initialize the repository
 - node_modules, package.json, package-lock.json
@@ -12,6 +13,7 @@
 - shall we push package.json and package-lock.json on git or not? yes
 
 
+- Lecture: 4
 - initialize git
 - add .gitignore
 - create a remote repo on github 
@@ -25,6 +27,7 @@
 - reading the query params in the routes
 - reading the dynamic routes
 
+- Lecture: 5
 - multiple route handlers - play with the code
 - next()
 - next function and errors along with res.send()
@@ -37,6 +40,7 @@
 - write a dummy auth middleware for all user routes except /user/login
 - wild card error handling using app.use("/", (err, req, res, next)) and should always write at the end
 
+- Lecture: 6
 - create a free cluster on MongoDB official website (Mongo Atlas)
 (conection string : mongodb+srv://shriyansh:Kolkata123456@namastenode.crklcdw.mongodb.net/)
 - install mongoose library (why this?)
@@ -46,8 +50,20 @@
 - create POST /signup API to add data to database
 - push some documents using API calls from postman
 
+- Lecture: 7
 - JS obejct vs JSON 
 - Add the express.json middleware to your app
 - Make your signup API dynamic to recieve data from the end user
+- User.findOne() with duplicate emailIds, which one it will return?
+- API - get user by email
+- API - Feed API - GET /feed - get all the users form the db
+- API - get user by id
+- create a delete user API
+- difference between patch and put
+- create a update user api using id and also using email
+- explore the mongoose documentation for model methods
+- what are the options available in a Model.findOneAndUpdate method, explore more about it
+
+
 
 
