@@ -2,8 +2,9 @@ require("dotenv").config();
 const express = require("express");
 const connectDB = require("./config/database")
 const User = require("./models/user");
-const user = require("./models/user");
-const validator = require("validator")
+const validator = require("validator");
+const {validateSignUpData} = require("./utils/validation");
+const bcrypt = require("bcrypt")
 const app = express();
 const port = Number(process.env.PORT) || 7777;
 
@@ -11,27 +12,49 @@ const port = Number(process.env.PORT) || 7777;
 app.use(express.json())
 
 app.post("/signup", async (req, res) => {
-    // should include all the must providing data -> firstName, lastName, emailId, password, age
-    // optional: gender, about, skills, photoUrl
-    // 
-    // create a new instane of User model
-    const data = req.body
+    
     try {
-        const allKeys = Object.keys(data)
-        const mustIncludeKeys = [
-            "firstName", "lastName", "emailId", "password", "age"
-        ]
-        const isAllAllowedKeysPresent = mustIncludeKeys.every((k) => allKeys.includes(k))
-        if(!isAllAllowedKeysPresent)    throw new Error("missing required fields!!");
-        if(!validator.isEmail(data.emailId))    throw new Error("Invalid email..");
-        if(data.photoUrl && (!validator.isDataURI(data.photoUrl)))  throw new Error("Incorrect url");
-        if(!validator.isStrongPassword(data.password))  throw new Error("Enter a strong password..");
-        // if(data.age < 18)    throw new Error("Age must be greater than or equal to 18");
-        const user = new User(req.body)
-        await user.save()
-        res.send("user added successfully!!!")
+        // validate the user signup data
+        validateSignUpData(req);
+
+        const {firstName, lastName, emailId, password} = req.body;
+
+        // encrypt the password
+        const passwordHash = await bcrypt.hash(password, 10);
+        console.log(passwordHash);
+        // save the data to database
+        const user = new User({
+            firstName,
+            lastName,
+            emailId,
+            password: passwordHash
+        });
+        await user.save();
+        res.send("user added successfully!!!");
     } catch(err) {
-        res.status(400).send("Error saving the user: " + err.message);
+        res.status(400).send("ERROR : " + err.message);
+    }
+});
+
+app.post("/login", async (req, res) => {
+    try {
+        const { emailId, password } = req.body;
+        if(!validator.isEmail(emailId)) {
+            throw new Error("Invalid Credentials");
+        }
+        const user = await User.findOne({ emailId : emailId });
+
+        if(!user) {
+            throw new Error("Invalid Credentials");
+        }
+        const isValidPassword = await bcrypt.compare(password, user.password);
+        if(isValidPassword) {
+            res.send("Login Successfull!!");
+        }else {
+            throw new Error("Invalid Credentials");
+        }
+    }catch(err) {
+        res.status(400).send("ERROR : " + err.message);
     }
 });
 
