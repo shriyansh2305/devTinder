@@ -64,6 +64,9 @@
 - explore the mongoose documentation for model methods
 - what are the options available in a Model.findOneAndUpdate method, explore more about it
 
-
-
-
+- Lecture: 8
+- Explore schematype options from the documentation
+- add required, unique, lowercase, min, minLength, trim
+- add default
+- Improve the database schema - PUT all appropriate validations on each field in Schema
+- Add timestamps to the userSchema
