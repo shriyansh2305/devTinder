@@ -2,16 +2,32 @@ require("dotenv").config();
 const express = require("express");
 const connectDB = require("./config/database")
 const User = require("./models/user");
+const user = require("./models/user");
+const validator = require("validator")
 const app = express();
 const port = Number(process.env.PORT) || 7777;
+
 
 app.use(express.json())
 
 app.post("/signup", async (req, res) => {
-    
+    // should include all the must providing data -> firstName, lastName, emailId, password, age
+    // optional: gender, about, skills, photoUrl
+    // 
     // create a new instane of User model
-    const user = new User(req.body)
+    const data = req.body
     try {
+        const allKeys = Object.keys(data)
+        const mustIncludeKeys = [
+            "firstName", "lastName", "emailId", "password", "age"
+        ]
+        const isAllAllowedKeysPresent = mustIncludeKeys.every((k) => allKeys.includes(k))
+        if(!isAllAllowedKeysPresent)    throw new Error("missing required fields!!");
+        if(!validator.isEmail(data.emailId))    throw new Error("Invalid email..");
+        if(data.photoUrl && (!validator.isDataURI(data.photoUrl)))  throw new Error("Incorrect url");
+        if(!validator.isStrongPassword(data.password))  throw new Error("Enter a strong password..");
+        // if(data.age < 18)    throw new Error("Age must be greater than or equal to 18");
+        const user = new User(req.body)
         await user.save()
         res.send("user added successfully!!!")
     } catch(err) {
@@ -66,17 +82,35 @@ app.delete("/user/:id", async (req, res) => {
 })
 
 // update data of a user
-app.patch("/user/:id", async (req, res) => {
-    const id = req.params.id
+app.patch("/user/:userId", async (req, res) => {
+    const userId = req.params?.userId
     const data = req.body
     try{
-        const user = await User.findByIdAndUpdate(id, data, {new:true, runValidators: true})
+        // API-level check for max 10 skills
+        if (data?.skills?.length > 10) {
+            throw new Error("Only 10 skills allowed")
+        }
+        const ALLOWED_UPDATES = [
+            "password", "gender", "about", "skills", "photoUrl"
+        ]
+        const requestedUpdates = Object.keys(data);
+        console.log(requestedUpdates);
+        
+        const isUpdateAllowed = requestedUpdates.every((k) => ALLOWED_UPDATES.includes(k))
+        // every return true, when all the cases inisde it returns true
+        // if any case fails, .every return false
+        if(!isUpdateAllowed) {
+            throw new Error("Update not allowed ")
+        }
+        const user = await User.findByIdAndUpdate(userId, data, {new:true, runValidators: true})
         if(!user)   res.status(404).send("User not found!!")
         else    res.send("User details updated successfully")
     }catch(err) {
-        res.status(400).send("something went wrong!!" + err.message)
+        res.status(400).send("Update failed : " + err.message)
     }
 })
+
+
 
 connectDB()
     .then(() => {
@@ -87,6 +121,6 @@ connectDB()
         })
     })
     .catch((err) => {
-        console.log("Database cannot be established!!");
+        console.log("Database cannot be established!!" + err.message);
     })
 

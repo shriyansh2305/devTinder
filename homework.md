@@ -70,3 +70,7 @@
 - add default
 - Improve the database schema - PUT all appropriate validations on each field in Schema
 - Add timestamps to the userSchema
+- Add API level validations on Pach request and Signup Post api
+- DATA Sanitization: Add API validation for each field
+- install validator
+- explore validator library function and use validator func for password, email, photoUrl

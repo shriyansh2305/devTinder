@@ -38,7 +38,19 @@ const userSchema = new mongoose.Schema({
         maxLength: 100,
     },
     skills: {
-        type: [String]
+        type: [String],
+        validate: {
+            validator: function(value) {
+              return Array.isArray(value) && value.every(skill => typeof skill === 'String');
+            },
+            message: 'Skills must be an array of strings'
+        },
+        validate: {
+            validator: function (val) {
+                return val.length <= 10;
+            },
+            message: "You can add up to 10 skills only.",
+        },
     },
     photoUrl: {
         type: String,
