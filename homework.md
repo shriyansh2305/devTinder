@@ -74,3 +74,4 @@
 - DATA Sanitization: Add API validation for each field
 - install validator
 - explore validator library function and use validator func for password, email, photoUrl
+- NEVER TRUST req.body
