@@ -340,3 +340,62 @@ PUT vs PATCH
     Also, If we have any field which is not there in the db, then taht will be ignored. 
     If along with price, we send expiry also, it will be ignored and no new key:pair 
     will be created in the document.
+
+bcrypt:
+
+Because bcrypt is not encryption, it's a one-way hashing function.
+There's no "unhashing".
+Comparison is done by hashing the plain password the same way and seeing if the results match.
+
+$2b$10$HhY1/hZKc1Q9a6A2nN5KOe9CpTw8m0AfVr2TZlAg2LkDoHgSVEQae
+This can be broken down as:
+
+    $2b$ → bcrypt version.
+    10$ → cost factor (salt rounds).
+    HhY1/hZKc1Q9a6A2nN5KOe → the 22-character base64-encoded salt.
+    The rest → the hashed password result.
+So yes, the salt is publicly visible in the hash.
+
+bcrypt.compare(plainPassword, storedHash)
+    bcrypt:
+        Extracts the salt from storedHash
+        Hashes plainPassword with that salt
+        Compares the result
+
+
+
+Cookies: 
+
+    Cookie Path Behavior: The Path tells the browser which routes (URLs) on your site can access this cookie.
+
+    🔹 Example 1: Path=/ (default)
+    
+        Set-Cookie: token=abc123; Path=/
+        This cookie is sent with every request to:
+            /
+            /dashboard
+            /profile/settings
+            /anything    
+    ✅ Best for global authentication or tracking cookies.
+
+    🔹 Example 2: Path=/admin
+
+    Set-Cookie: token=abc123; Path=/admin
+    This cookie is only sent with requests to:
+        /admin
+        /admin/settings
+        /admin/users
+
+    ❌ Not sent to:
+        /
+        /user
+        /dashboard
+
+    ✅ Good for admin-only cookies.
+
+✅ jwt.sign() = create token (data + secret + signature)
+✅ jwt.verify() = check token (by recreating and comparing signature)
+
+You don’t need to “decrypt” the token — JWT is not encrypted, just signed.
+
+

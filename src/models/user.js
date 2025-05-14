@@ -1,4 +1,9 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
+const validator = require("validator");
+const jwt = require('jsonwebtoken');
+const bcrypt = require("bcrypt");
+
+const jwtSecretKey = process.env.JWT_SECRET_KEY;
 
 const userSchema = new mongoose.Schema({
     firstName: {
@@ -56,6 +61,23 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "https://www.silcharmunicipality.in/wp-content/uploads/2021/02/male-face.jpg"
     }
-}, { timestamps: true });
+ }, 
+ { 
+    timestamps: true,
+ }
+);
+// don't use arrow functions, concept of this is different there
+userSchema.methods.getJWT = function() {
+    const user = this;
+    const token = jwt.sign({ _id: user._id }, jwtSecretKey, { expiresIn: '7d'});
+    return token;
+};
+
+userSchema.methods.validatePassword = async function (passwordInputByUser) {
+    const user = this;
+    const passwordHash = user.password;
+    const isPasswordValid = await bcrypt.compare(passwordInputByUser, passwordHash);
+    return isPasswordValid;
+};
 
 module.exports = mongoose.model("User", userSchema)
