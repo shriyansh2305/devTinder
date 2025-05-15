@@ -398,4 +398,14 @@ Cookies:
 
 You don’t need to “decrypt” the token — JWT is not encrypted, just signed.
 
+- Forgot password API flow:
+
+| Check                      | Needed? |
+| -------------------------- | ------- |
+| User is logged in          | ❌ No    |
+| Email exists               | ✅ Yes   |
+| Token generation & expiry  | ✅ Yes   |
+| Send email with reset link | ✅ Yes   |
+
+
 

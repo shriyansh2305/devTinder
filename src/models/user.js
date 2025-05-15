@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const jwt = require('jsonwebtoken');
 const bcrypt = require("bcrypt");
+require("dotenv").config();
 
 const jwtSecretKey = process.env.JWT_SECRET_KEY;
 
@@ -80,4 +81,4 @@ userSchema.methods.validatePassword = async function (passwordInputByUser) {
     return isPasswordValid;
 };
 
-module.exports = mongoose.model("User", userSchema)
+module.exports = mongoose.model("User", userSchema);
