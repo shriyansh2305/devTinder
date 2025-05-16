@@ -407,5 +407,10 @@ You don’t need to “decrypt” the token — JWT is not encrypted, just signe
 | Token generation & expiry  | ✅ Yes   |
 | Send email with reset link | ✅ Yes   |
 
+Even if two ObjectIds have the same value (like "6658a1234d..."), 
+they are different objects in memory, so === returns false.
+
+    new mongoose.Types.ObjectId('abc') === new mongoose.Types.ObjectId('abc'); // false
+
 
 

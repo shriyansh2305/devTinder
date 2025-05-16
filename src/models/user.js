@@ -67,6 +67,9 @@ const userSchema = new mongoose.Schema({
     timestamps: true,
  }
 );
+
+// If we want to query on both firstName and lastName
+userSchema.index({firstName: 1, lastName: 1});
 // don't use arrow functions, concept of this is different there
 userSchema.methods.getJWT = function() {
     const user = this;
