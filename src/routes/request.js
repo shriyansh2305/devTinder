@@ -11,9 +11,9 @@ requestRouter.post("/request/send/:status/:toUserId", userAuth, async (req, res)
         const status = req.params.status;
 
         // If user tries to send himself, we can also use a pre hook
-        if(fromUserId.equals(toUserId)) {
-            throw new Error("You can not send request to yourself!!");
-        }
+        // if(fromUserId.equals(toUserId)) {
+        //     throw new Error("You can not send request to yourself!!");
+        // }
         const allowedStatus = ["interested", "ignored"];
         if(!allowedStatus.includes(status)) {
             throw new Error(`status: ${status} is not allowed!!`);
