@@ -428,3 +428,13 @@ pre('aggregate')            | Before an aggregation pipeline runs
 age: { $gt: 25 } uses MongoDB's comparison operator $gt (greater than).
 Multiple fields in the same object imply AND logic by default.
 So { age: { $gt: 25 }, name: "ayush" } is treated as: WHERE age > 25 AND name = 'ayush'
+
+- map runs the callback function for each item in array
+
+- Operation | Time Complexity | Notes
+add(value) | O(1) averageO(n) worst | Adds a value if not already present. Uses hashing.
+delete(value) | O(1) averageO(n) worst | Removes the value from the set.
+has(value) | O(1) averageO(n) worst | Checks if the set contains the value.
+clear() | O(n) | Empties the entire set. Linear in size because all entries are removed.
+Iteration (forEach, for...of, [...set]) | O(n) | Iterates over all elements.
+size | O(1) | Returns number of elements. Stored internally.

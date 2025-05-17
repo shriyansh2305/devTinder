@@ -127,3 +127,12 @@
 - read about ref and populate : https://mongoosejs.com/docs/populate.html#:~:text=You%20can%20set%20the%20ref,a%20good%20reason%20not%20to.
 - Create GET /user/requests/received with all the checks
 - create GET /user/connections
+
+- Lecture: 14
+- logic for GET /feed API
+- read about $nin, $and and other query operators
+- pagination: https://codebeyondlimits.com/articles/pagination-in-mongodb-the-only-right-way-to-implement-it-and-avoid-common-mistakes
+- .skip() and .limit()
+- /feed?page=1&limit=10 => 1-10 => .skip(0) & .limit(10)
+- /feed?page=2&limit=10 => 11-20 => .skip(10) & .limit(10)
+- /feed?page=3&limit=10 => 21-30 => .skip(20) & .limit(10)
