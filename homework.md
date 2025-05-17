@@ -110,7 +110,6 @@
 - Make sure you validate all data in every POST, PATCH apis
 
 - Lecture: 12
-
 - Create a connection request schema
 - send connection request API
 - Proper validation of Data
@@ -121,3 +120,10 @@
 - Why do we need an index?
 - what is the adv or disadv of creating indexes?
 - ALWAYS THINK ABOUT CORNER CASES
+
+- Lecture: 13
+- Write code with proper validation for POST /request/review/:status/:requestId
+- Thought process - POST vs GET
+- read about ref and populate : https://mongoosejs.com/docs/populate.html#:~:text=You%20can%20set%20the%20ref,a%20good%20reason%20not%20to.
+- Create GET /user/requests/received with all the checks
+- create GET /user/connections

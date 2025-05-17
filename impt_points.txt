@@ -412,5 +412,19 @@ they are different objects in memory, so === returns false.
 
     new mongoose.Types.ObjectId('abc') === new mongoose.Types.ObjectId('abc'); // false
 
+Hook Type                   |             Description
+pre('save')                 | Before saving a document (insert or update)
+pre('validate')             | Before validation runs
+pre('remove')               | Before document removal
+pre('deleteOne')            | Before deletion via query
+pre('find')                 | Before any .find() query
+pre('findOne')              | Before .findOne()
+pre('update')               | Before .update()
+pre('updateOne')            | Before .updateOne()
+pre('aggregate')            | Before an aggregation pipeline runs
 
 
+
+age: { $gt: 25 } uses MongoDB's comparison operator $gt (greater than).
+Multiple fields in the same object imply AND logic by default.
+So { age: { $gt: 25 }, name: "ayush" } is treated as: WHERE age > 25 AND name = 'ayush'
