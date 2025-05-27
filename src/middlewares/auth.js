@@ -11,7 +11,8 @@ const userAuth = async (req, res, next) => {
     try {
         const { token } = req.cookies;
         if(!token) {
-            throw new Error("Token is not valid!!");
+            // status 401 means unauthorized
+            return res.status(401).send("Please login!");
         }
         const decodedObj = jwt.verify(token, jwtSecretKey);
         const {_id} = decodedObj;
