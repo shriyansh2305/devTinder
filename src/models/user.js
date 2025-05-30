@@ -40,7 +40,7 @@ const userSchema = new mongoose.Schema({
     },
     about: {
         type: String,
-        default: "This is the default about!!",
+        default: "This person is so lazy to put the about!!",
         maxLength: 500,
     },
     skills: {
