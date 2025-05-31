@@ -63,8 +63,8 @@ userRouter.get("/feed", userAuth, async (req, res) => {
         let { page, pageSize } = req.query;
         // If "page" and "pageSize" are not sent, we will default them to 1 and 5.
         page = parseInt(page, 10) || 1;
-        pageSize = parseInt(pageSize, 10) || 10;
-        pageSize = pageSize > 50 ? 50 : pageSize;
+        pageSize = parseInt(pageSize, 10) || 100;
+        pageSize = pageSize > 100 ? 100 : pageSize;
         
         const loggedInUser = req.user;
         // find all connnectionRequests (sent+received)
