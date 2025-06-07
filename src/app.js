@@ -5,6 +5,9 @@ const cookieParser = require("cookie-parser");
 const port = Number(process.env.PORT) || 7777;
 const app = express();
 const cors = require("cors");
+const http = require("http");
+const initializeSocket = require("./utils/socket");
+
 
 app.use(
   cors({
@@ -19,16 +22,21 @@ const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/request");
 const userRouter = require("./routes/user");
+const chatRouter = require("./routes/chat");
 
 app.use("/", authRouter);
 app.use("/", profileRouter);
 app.use("/", requestRouter);
 app.use("/", userRouter);
+app.use("/", chatRouter);
+
+const server = http.createServer(app);
+initializeSocket(server)
 
 connectDB()
   .then(() => {
     console.log("Database connection estabished..");
-    app.listen(port, () => {
+    server.listen(port, () => {
       console.log("Server is successfully listening on port 7777...");
     });
   })
